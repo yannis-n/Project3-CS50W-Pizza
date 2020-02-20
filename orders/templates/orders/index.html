@@ -1,0 +1,43 @@
+{% extends "orders/base.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+  <nav class="category-nav navbar navbar-dark bg-dark">
+
+    {% for category in categories.all %}
+    <a class="category-link nav-link" href="#{{ category.name }}">{{ category.name }}</a>
+    {% endfor %}
+  </nav>
+
+
+  {% for category in categories.all %}
+    <table id="{{ category.name }}" class="table">
+      <thead>
+        <tr>
+          <h3>{{ category.name }}</h3>
+        </tr>
+
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Small</th>
+          <th scope="col">Large</th>
+          <th scope="col">One Size</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for item in category.items.all %}
+        <tr>
+          <th scope="row">{{ item.name }}</th>
+          <td>{{ item.small_price|default_if_none:"-" }}</td>
+          <td>{{ item.large_price|default_if_none:"-" }}</td>
+          <td>{{ item.one_size_price|default_if_none:"-" }}</td>
+          <td><a href="{% url 'menu_item' item.id %}" class="btn btn-dark">Add</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  {% endfor %}
+
+</div>
+{% endblock %}

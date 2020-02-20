@@ -1,0 +1,40 @@
+{% extends "orders/base.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+
+  <h3>Orders</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User</th>
+        <th scope="col">Date</th>
+        <th scope="col">Modified in</th>
+        <th scope="col">Status</th>
+      </tr>
+  </thead>
+  <tbody>
+
+    {% for order in orders %}
+      <tr>
+        <th scope="row">{{ order.id }}</th>
+        <td>{{ order.user }}</td>
+        <td>{{ order.datetime }}</td>
+        <td>{{ order.last_modified }}</td>
+        <td>{{ order.transaction }}</td>
+        <td><a href="{% url 'view_order' order.id %}" class="btn btn-dark">View Order</a></td>
+
+      </tr>
+    {% endfor %}
+
+  </tbody>
+
+  </table>
+
+
+</div>
+
+{% endblock %}

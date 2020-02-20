@@ -1,0 +1,52 @@
+{% extends "orders/base.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+
+  <table class="table">
+
+    <thead>
+
+
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Size</th>
+        <th scope="col">Toppings</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for item in cart %}
+        <tr>
+          <th scope="row">{{ item.item.name }}</th>
+
+          <td> {% if item.size == 'one_size' %} - {% else %}{{ item.size }} {% endif %}</td>
+          <td>{% for topping in item.toppings.all %} {{ topping }} {% endfor %}</td>
+          <td>{{ item.amount }}</td>
+          <td>{{ item.price }}</td>
+
+        </tr>
+
+      {% empty %}
+        The Cart is empty!
+
+
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+  
+  <form class="" action="{% url 'order' %}" method="post">
+    {% csrf_token %}
+    <h3>Total Price:{{total_price|floatformat:2}}</h3>
+    <button type="submit" class="btn btn-dark" name="button">Order now!</button>
+  </form>
+
+
+</div>
+
+{% endblock %}

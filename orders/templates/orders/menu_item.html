@@ -1,0 +1,56 @@
+{% extends "orders/base.html" %}
+
+{% block js %}
+{% load static %}
+{{ menu_item.number_of_toppings |json_script:'toppings-data'}}
+<script src="{% static 'orders/menu_item.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+  <div class="container-fluid">
+    <h2 id="h2">{{  menu_item.name }} {{ menu_item.category}}</h2>
+    <form class="" action="{% url 'add_to_cart' menu_item.id %}" method="post">
+      {% csrf_token %}
+      <div class="">
+        <select id="size" name="size" class="form-control">
+          {% if menu_item.one_size_price %}
+            <option value="one_size">{{ menu_item.one_size_price }}</option>
+          {% else %}
+          <option value="small">Small({{ menu_item.small_price }})</option>
+          <option value="large">Large({{ menu_item.large_price }})</option>
+          {% endif %}
+        </select>
+        {% if menu_item.number_of_toppings > 0 %}
+          <h3>Choose {{menu_item.number_of_toppings}}
+            {% if menu.number_of_toppings == 1 %}topping
+            {% else %} toppings{% endif %}!</h3>
+          <fieldset>
+            {% for topping in toppings %}
+              <input type="checkbox" class="toppings_checkbox" value="{{topping.id}}"> <div class="checkbox-label">{{topping.name}}</div>
+            {% endfor %}
+          </fieldset>
+        {% endif %}
+
+        {% if special_toppings %}
+          <h3>
+            Special toppings:
+          </h3>
+          {% for topping in special_toppings %}
+            <input type="checkbox" name="special_toppings" value="{{topping.id}}"> <div class="checkbox-label"> {{topping.name}}({{topping.special_price}}) </div>
+          {% endfor %}
+        {% endif %}
+
+        <input type="number" class="form-control" id="amount" name="amount" min="1" step="1">
+        <button type="submit" class="btn btn-dark" name="button">Add to Cart!</button>
+
+      </div>
+
+
+    </form>
+
+
+
+  </div>
+
+{% endblock %}

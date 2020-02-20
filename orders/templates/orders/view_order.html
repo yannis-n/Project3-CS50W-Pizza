@@ -1,0 +1,56 @@
+{% extends "orders/base.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+  <h3>Order: #{{ order.id }}</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">User</th>
+        <th scope="col">Date</th>
+        <th scope="col">Modified in</th>
+        <th scope="col">Status</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td>{{ order.user }}</td>
+        <td>{{ order.datetime }}</td>
+        <td>{{ order.last_modified }}</td>
+        <td>{{ order.transaction }}</td>
+      </tr>
+  </tbody>
+
+  </table>
+
+  <table class="table">
+
+    <thead>
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Toppings</th>
+        <th scope="col">Size</th>
+        <th scope="col">Amount</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for item in order.items_in_order.all %}
+        <tr>
+          <th scope="row">{{ item.item.name }}</th>
+          <td>{% for topping in item.toppings.all %} <li>{{ topping }}</li> {% endfor %}</td>
+          <td>{% if item.size == 'one_size' %} - {% else %} {{ item.size }} {% endif %}</td>
+          <td>{{ item.amount }}</td>
+
+        </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+</div>
+
+{% endblock %}
