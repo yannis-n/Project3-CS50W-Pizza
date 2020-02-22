@@ -3,27 +3,9 @@
 {% block body %}
 
 <div class="container-fluid">
-  <h3>Order: #{{ order.id }}</h3>
+  <h2>Order: #{{ order.id }} in {{ order.datetime}}</h2>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">User</th>
-        <th scope="col">Date</th>
-        <th scope="col">Modified in</th>
-        <th scope="col">Status</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td>{{ order.user }}</td>
-        <td>{{ order.datetime }}</td>
-        <td>{{ order.last_modified }}</td>
-        <td>{{ order.transaction }}</td>
-      </tr>
-  </tbody>
-
-  </table>
+  <h3>Status: {{ order.transaction }}</h3>
 
   <table class="table">
 
@@ -49,11 +31,6 @@
       {% endfor %}
     </tbody>
   </table>
-  <form class="" action="{% url 'order_completed' order.id %}" method="post">
-  {% csrf_token %}
-    <button type="submit" class="btn btn-dark" name="button">Complete Order</button>
-  </form>
-
 </div>
 
 {% endblock %}

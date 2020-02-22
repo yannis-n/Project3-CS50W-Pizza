@@ -16,7 +16,7 @@ class Category(models.Model):
 
 class Topping(models.Model):
     name = models.CharField(max_length=64)
-    category = models.ManyToManyField(Category, related_name="toppings", blank=True, null=True)
+    category = models.ManyToManyField(Category, related_name="toppings", blank=True)
     special_price = models.DecimalField(max_digits=5,decimal_places=2, blank=True, null=True)
 
     def __str__(self):

@@ -130,6 +130,16 @@ def cart(request):
     }
     return render(request, "orders/cart.html", context)
 
+def delete_cart_item(request, item_id):
+    try:
+        item = Shopping_Cart_Item.objects.all().filter(pk = item_id).filter(user=request.user)
+    except:
+        raise Http404("Item not found.")
+    item.delete()
+
+    return HttpResponseRedirect(reverse("cart"))
+
+
 def order(request):
     user = User.objects.get(pk=request.user.id)
     cart = Shopping_Cart_Item.objects.all().filter(user=user).filter(cart=None)
@@ -145,7 +155,7 @@ def order(request):
 
 def view_orders(request):
     if request.user.is_staff:
-        orders = Order.objects.all()
+        orders = Order.objects.all().order_by('-transaction')
 
         context = {
             "orders":orders
@@ -162,4 +172,32 @@ def view_order(request, order_id):
         }
         return render(request, "orders/view_order.html", context)
     else:
+        if not request.user.is_authenticated:
+            return render(request, "orders/login.html")
+        order = Order.objects.get(pk=order_id)
+        context = {
+            "order":order
+        }
+        return render(request, "orders/history_item.html", context)
+
+
+def order_completed(request, order_id):
+    if request.user.is_staff:
+        try:
+            order = Order.objects.get(pk=order_id)
+        except:
+            raise Http404("Order not found.")
+        order.transaction="completed"
+        order.save()
+        return HttpResponseRedirect(reverse("view_orders"))
+    else:
         raise PermissionDenied
+
+def history(request):
+    if not request.user.is_authenticated:
+        return render(request, "orders/login.html")
+    orders =  Order.objects.all().filter(user = request.user).order_by('-transaction')
+    context = {
+        "orders":orders
+    }
+    return render(request, "orders/view_orders.html", context)

@@ -15,6 +15,7 @@
         <th scope="col">Toppings</th>
         <th scope="col">Amount</th>
         <th scope="col">Price</th>
+        <th scope="col"></th>
       </tr>
     </thead>
 
@@ -27,6 +28,10 @@
           <td>{% for topping in item.toppings.all %} {{ topping }} {% endfor %}</td>
           <td>{{ item.amount }}</td>
           <td>{{ item.price }}</td>
+          <td><form class="" action="{% url 'delete_cart_item' item.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="button" class="btn btn-dark">X</button>
+          </form></td>
 
         </tr>
 
@@ -39,7 +44,7 @@
     </tbody>
 
   </table>
-  
+
   <form class="" action="{% url 'order' %}" method="post">
     {% csrf_token %}
     <h3>Total Price:{{total_price|floatformat:2}}</h3>
