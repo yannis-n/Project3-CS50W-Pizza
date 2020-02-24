@@ -55,7 +55,8 @@ class OrdersTestCase(TestCase):
         pizza = Category.objects.create(name="Pizza")
         sub = Category.objects.create(name="Sub")
 
-        ham = Topping.objects.create(name="ham", category=pizza)
+        ham = Topping.objects.create(name="ham")
+        ham.category.add(pizza)
         extra_cheese = Topping.objects.create(name="extra_cheese", special_price=0.50)
 
         Menu_Item.objects.create(name="margarita",
