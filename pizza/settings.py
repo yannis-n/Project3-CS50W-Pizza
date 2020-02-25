@@ -27,7 +27,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://nameless-inlet-91378.herokuapp.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['.cs50w-pizza.herokuapp.com''cs50w-pizza.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
