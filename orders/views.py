@@ -15,7 +15,8 @@ from django.db.models import Sum
 # Create your views here.
 def index(request):
     if not request.user.is_authenticated:
-        return render(request, "orders/login.html")
+        # return render(request, "orders/login.html")
+        return HttpResponseRedirect(reverse("login"))
     context = {
         "user":request.user,
         "menu":Menu_Item.objects.all(),
