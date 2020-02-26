@@ -53,7 +53,14 @@ def register_view(request):
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
         login(request, user)
-        return HttpResponseRedirect(reverse('index'))
+        context = {
+            "user":request.user,
+            "menu":Menu_Item.objects.all(),
+            "categories":Category.objects.all(),
+            "items":Shopping_Cart_Item.objects.filter(user=User.objects.get(pk=request.user.id)).filter(cart=None).count()
+        }
+        return render(request, "orders/index.html", context)
+        # return HttpResponseRedirect(reverse('index'))
     else:
         form = SignUpForm()
     return render(request, 'orders/register.html', {'form': form})
