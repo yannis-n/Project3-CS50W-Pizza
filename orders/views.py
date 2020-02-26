@@ -15,8 +15,7 @@ from django.db.models import Sum
 # Create your views here.
 def index(request):
     if not request.user.is_authenticated:
-        # return render(request, "orders/login.html")
-        return HttpResponseRedirect(reverse("login"))
+        return render(request, "orders/login.html")
     context = {
         "user":request.user,
         "menu":Menu_Item.objects.all(),
@@ -31,7 +30,14 @@ def login_view(request):
       user = authenticate(request, username=username, password=password)
       if user is not None:
           login(request, user)
-          return HttpResponseRedirect(reverse("index"))
+          context = {
+              "user":request.user,
+              "menu":Menu_Item.objects.all(),
+              "categories":Category.objects.all(),
+              "items":Shopping_Cart_Item.objects.filter(user=User.objects.get(pk=request.user.id)).filter(cart=None).count()
+          }
+          return render(request, "orders/index.html", context)
+          # return HttpResponseRedirect(reverse("index"))
       else:
           return render(request, "orders/login.html", {"message": "Invalid credentials."})
 
